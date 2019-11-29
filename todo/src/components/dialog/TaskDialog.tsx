@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import {Dialog} from "@material-ui/core";
 
@@ -14,52 +14,79 @@ export interface TaskDialogProps {
     createTask?: (body: Task) => void;
     updateTask?: (body: Task) => void;
     taskName?: string;
-    taskDescription?: string;
-    taskStatus?: string;
-    taskId?: number;
+    description?: string;
+    status?: string;
+    id?: number;
 }
 
 function TaskDialog(props: TaskDialogProps) {
+    const initialState = {
+        id: props.id,
+        taskName: props.taskName,
+        description: props.description,
+        status: props.status
+    };
     const {onClose, open} = props;
-    const [status, setStatus] = React.useState(props.taskStatus);
-    const [taskName, setName] = React.useState(props.taskName);
-    const [description, setDescription] = React.useState(props.taskDescription);
-    const [id, setId] = React.useState(props.taskId);
+    const [taskState, setTaskState] = React.useState(initialState);
+
+    useEffect(() => {
+        if (props.id !== taskState.id || props.taskName !== taskState.taskName) {
+            setTaskState(
+                {
+                    taskName: props.taskName,
+                    id: props.id,
+                    description: props.description,
+                    status: props.status
+                }
+                );
+        }
+    }, [props.taskName, props.id, props.status, props.description]);
 
     const handleClose = () => {
         onClose();
     };
 
     const handleSelect = (e: any) => {
-        setStatus(e);
+        setTaskState((prevState) => ({
+            ...prevState,
+            status: e
+    }));
     };
 
     const handleName = (e: any) => {
-        setName(e);
+        setTaskState((prevState) => ({
+            ...prevState,
+            taskName: e
+        }));
     };
 
     const handleDescription = (e: any) => {
-        setDescription(e);
+        setTaskState((prevState) => ({
+            ...prevState,
+            description: e
+        }));
     };
 
     const createTask = () => {
         let body;
-        if (id === -1) {
+        //creating body for task creation
+        if (taskState.id === -1) {
             body = {
-                taskName,
-                description,
-                status,
+                taskName: taskState.taskName,
+                description: taskState.description,
+                status: taskState.status,
             } as Task;
             if (props.createTask) {
                 props.createTask(body);
             }
         }
         else {
+            //creating body for task update
             body = {
-                id,
-                taskName,
-                description,
-                status,
+                id: taskState.id,
+                taskName: taskState.taskName,
+                description: taskState.description,
+                status: taskState.status,
             } as Task;
             if (props.updateTask) {
                 props.updateTask(body);
@@ -72,12 +99,12 @@ function TaskDialog(props: TaskDialogProps) {
             <form onSubmit={createTask}>
                 <div className={'container'}>
                     <label className={'__labels'}>Task Name:</label>
-                    <Input type='text' onChange={(e) => handleName(e.target.value)} value={taskName}/>
+                    <Input type='text' onChange={(e) => handleName(e.target.value)} value={taskState.taskName}/>
                     <label className={'__labels'}>Task Description:</label>
-                    <Input type='text' onChange={(e) => handleDescription(e.target.value)} value={description}/>
+                    <Input type='text' onChange={(e) => handleDescription(e.target.value)} value={taskState.description}/>
                     <label className={'__labels'}>Task Status:</label>
                     <Select
-                        value={status}
+                        value={taskState.status}
                         onChange={(e) => handleSelect(e.target.value)}
                     >
                         <MenuItem value={'created'}>Created</MenuItem>

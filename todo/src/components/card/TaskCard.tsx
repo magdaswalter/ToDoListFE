@@ -40,14 +40,12 @@ function TaskCard(props: ITaskCardProps) {
     }
 
     function openDialog(task: Task) {
-        let newTaskState = { ...taskState};
-        newTaskState = {
+        setTaskState({
             description: task.description,
             id: task.id,
             taskName: task.taskName,
             status: task.status
-        };
-        setTaskState(newTaskState);
+        });
         setOpen(true);
     }
 
@@ -82,8 +80,8 @@ function TaskCard(props: ITaskCardProps) {
                 <Button className={'__modify'} variant={'contained'} size={'medium'} color={'primary'} onClick={() => openDialog(props.tasks)}>Modify Task</Button>
                 <Button variant={'contained'} size={'medium'} color={'secondary'} onClick={() => deleteTask(props.tasks.id)}>Delete Task</Button>
             </div>
-            <TaskDialog taskName={taskState.taskName} taskDescription={taskState.description}
-                        taskStatus={taskState.status} taskId={taskState.id} open={open} onClose={handleClose}
+            <TaskDialog taskName={taskState.taskName} description={taskState.description}
+                        status={taskState.status} id={taskState.id} open={open} onClose={handleClose}
                         updateTask={updateTask}
             />
         </div>

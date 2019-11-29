@@ -64,7 +64,7 @@ class ToDo extends React.Component<IToDoProps, IToDoState> {
 
     handleClickOpen = () => {
         this.setState({
-            open: true,
+            open: true
         });
     };
 
@@ -88,7 +88,7 @@ class ToDo extends React.Component<IToDoProps, IToDoState> {
                     paginationV={this.props.tasks.paginationDetails}
                     changePage={this.handlePagination.bind(this)}
                 />
-                <TaskDialog open={this.state.open} onClose={this.handleClose} createTask={this.createTask} taskId={-1}
+                <TaskDialog open={this.state.open} onClose={this.handleClose} createTask={this.createTask} id={-1}
                 />
             </div>
         )

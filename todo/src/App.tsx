@@ -17,12 +17,6 @@ class App extends React.Component<any, any> {
         store.dispatch(getTasks(0));
     }
 
-    // if (((alma.paginationDetails.totalPages - 1) === alma.paginationDetails.actualPage) &&
-    //     ((alma.paginationDetails.totalElements % 6) !== 0)) {
-    //     store.dispatch(createTask({description: 'testdecs', taskName: 'test'}, true));
-    // } else {
-    //     store.dispatch(createTask({description: 'testdecs', taskName: 'test'}, false));
-    // }
     render() {
         return (
             <Provider store={store}>
