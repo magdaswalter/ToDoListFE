@@ -1,4 +1,5 @@
 import initialState from "../initialState";
+import update from 'react-addons-update';
 import * as types from './types';
 import {AnyAction} from "redux";
 
@@ -8,10 +9,47 @@ export default function task(state = initialState, action: AnyAction) {
             return {
                 ...state,
                 tasks: action.tasks,
-                paginationDetails: action.paginationDetails
+                paginationDetails: {
+                    totalPages: action.paginationDetails.totalPages,
+                    totalElements: action.paginationDetails.totalElements,
+                    actualPage: action.paginationDetails.actualPage
+                }
+
             };
         case types.CREATE_TASKS_SUCCESS:
+            if (action.isStateEditable) {
+                return {
+                    ...state,
+                    tasks: [...state.tasks, action.task],
+                    paginationDetails: {
+                        ...state.paginationDetails,
+                        totalElements: state.paginationDetails.totalElements + 1,
+                    }
+                }
+            }else {
+                return {
+                    ...state
+                }
+            }
+        case types.UPDATE_TASKS_SUCCESS:
+            return update(state, {
+                tasks: {
+                    [action.index]: {
+                        taskName: {$set: action.task.taskName},
+                        id: {$set: action.task.id},
+                        description: {$set: action.task.description},
+                        status: {$set: action.task.status}
+                    }
+                }
+            });
         case types.DELETE_TASKS_SUCCESS:
+            return {
+                ...state,
+                tasks: [
+                    ...state.tasks.slice(0,action.stateId),
+                    ...state.tasks.slice(action.stateId + 1)
+                ]
+            };
         default:
             return state;
     }

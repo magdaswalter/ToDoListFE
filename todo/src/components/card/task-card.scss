@@ -1,0 +1,72 @@
+@import "../../variables";
+
+@mixin margins {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@mixin field {
+  color: $color-blue;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.card {
+  background-color: #bbdefb;
+  padding: 1em;
+  margin: 5px;
+  flex: 1 1 auto;
+  min-width: 300px;
+  border-radius: 2px;
+  @media screen and (min-width: 1600px) {
+    min-width: 500px;
+  }
+
+  .__header {
+    color: $color-black;
+    border-bottom: 3px solid $line-color;
+    font-weight: bold;
+    font-size: 38px;
+  }
+
+  .__content {
+    @include margins;
+    border-bottom: 1px solid $line-color;
+  }
+
+  .__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 15px;
+    .__modify {
+      margin-right: 5px;
+    }
+  }
+}
+
+.status-container {
+  margin-bottom: 5px;
+  .__field {
+    @include field;
+    padding-right: 20px;
+  }
+
+  .__text {
+    font-weight: bold;
+    font-size: 15px;
+    color: #d32f2f;
+  }
+}
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  .__field {
+    @include field;
+  }
+
+  .__text {
+    font-size: 13px;
+  }
+}

@@ -1,8 +1,7 @@
 import axios from 'axios';
 import * as types from './types';
 import * as interfaces from '../../interfaces/task.type';
-import {Simulate} from "react-dom/test-utils";
-import {AnyAction, Dispatch} from "redux";
+import {Dispatch} from "redux";
 
 
 export const httpToDo = axios.create({
@@ -32,7 +31,8 @@ export function getTasks(page: number): any {
                     tasks: data.content,
                     paginationDetails: {
                         totalPages: data.totalPages,
-                        totalElements: data.totalElements
+                        totalElements: data.totalElements,
+                        actualPage: page
                     }
                 })
             }).catch(error => {
@@ -42,42 +42,60 @@ export function getTasks(page: number): any {
     }
 }
 
-export function createTask(createBody: interfaces.PostBody): any {
+export function createTask(createBody: interfaces.PostBody, isStateEditable: boolean): any {
 
     return function (dispatch: Dispatch) {
         dispatch(requestDispatch(types.CREATE_TASKS_REQUEST));
         return httpToDo.post('', createBody)
             .then((response: {data: {content: interfaces.Task}}) => {
-                debugger;
                 const data = response.data;
                 dispatch({
                     type: types.CREATE_TASKS_SUCCESS,
-                    tasks: data.content,
+                    task: data,
+                    isStateEditable
                 })
             }).catch(error => {
                 dispatch(requestDispatch(types.CREATE_TASKS_ERROR));
-                alert('Something went wrong during task creation or into updated one, message: ' + error);
+                alert('Something went wrong during task creation, message: ' + error);
             })
     }
 }
 
-export function deleteTask(taskId: number): any {
+export function updateTask(updateBody: interfaces.PostBody, index: number): any {
+
+    return function (dispatch: Dispatch) {
+        dispatch(requestDispatch(types.UPDATE_TASKS_REQUEST));
+        return httpToDo.post('', updateBody)
+            .then((response: {data: {content: interfaces.Task}}) => {
+                const data = response.data;
+                dispatch({
+                    type: types.UPDATE_TASKS_SUCCESS,
+                    task: data,
+                    index: index
+                })
+            }).catch(error => {
+                dispatch(requestDispatch(types.UPDATE_TASKS_ERROR));
+                alert('Something went wrong during updating a task, message: ' + error);
+            })
+    }
+}
+
+export function deleteTask(taskId: number, stateId: number): any {
 
     const getTasksUrl = '/' + taskId;
 
     return function (dispatch: Dispatch) {
-        dispatch(requestDispatch(types.CREATE_TASKS_REQUEST));
+        dispatch(requestDispatch(types.DELETE_TASKS_REQUEST));
         return httpToDo.delete(getTasksUrl)
             .then((response: {data: {content: interfaces.Task}}) => {
-                debugger;
                 const data = response.data;
                 dispatch({
-                    type: types.CREATE_TASKS_SUCCESS,
-                    tasks: data.content,
+                    type: types.DELETE_TASKS_SUCCESS,
+                    stateId: stateId,
                 })
             }).catch(error => {
-                dispatch(requestDispatch(types.CREATE_TASKS_ERROR));
-                alert('Something went wrong during task creation or into updated one, message: ' + error);
+                dispatch(requestDispatch(types.DELETE_TASKS_ERROR));
+                alert('Something went wrong during deleteing a task, message: ' + error);
             })
     }
 }
