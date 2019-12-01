@@ -35,13 +35,7 @@ class ToDo extends React.Component<IToDoProps, IToDoState> {
     }
 
     createTask (body: Task) {
-        //checking if we are on the last page
-        if (((this.props.tasks.paginationDetails.totalPages - 1) === this.props.tasks.paginationDetails.actualPage) &&
-            ((this.props.tasks.paginationDetails.totalElements % 6) !== 0)) {
-            AppDispatch(createTask(body, true));
-        } else {
-            AppDispatch(createTask(body, false));
-        }
+        AppDispatch(createTask(body));
     }
 
     deleteTask(id: number, index: number) {

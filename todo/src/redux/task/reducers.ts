@@ -17,20 +17,13 @@ export default function task(state = initialState, action: AnyAction) {
 
             };
         case types.CREATE_TASKS_SUCCESS:
-            if (action.isStateEditable) {
                 return {
                     ...state,
                     tasks: [...state.tasks, action.task],
                     paginationDetails: {
-                        ...state.paginationDetails,
-                        totalElements: state.paginationDetails.totalElements + 1,
+                        ...state.paginationDetails
                     }
-                }
-            }else {
-                return {
-                    ...state
-                }
-            }
+                };
         case types.UPDATE_TASKS_SUCCESS:
             return update(state, {
                 tasks: {

@@ -12,9 +12,9 @@ describe('Pagination', () => {
 
     const props = {
         paginationV: {
-            totalPages: 2,
-            totalElements: 11,
-            actualPage: 0
+            totalPages: 3,
+            totalElements: 16,
+            actualPage: 2
         },
         changePage: mockChangePage
     };
@@ -31,14 +31,14 @@ describe('Pagination', () => {
         pagination
             .find('[id="BackButton"]')
             .simulate('click');
-        expect(mockChangePage).toHaveBeenCalledWith(props.paginationV.totalPages - 1, props.paginationV.totalElements);
+        expect(mockChangePage).toHaveBeenCalledWith(props.paginationV.actualPage - 1, 6);
     });
 
     it('call changePage() on NextButtonClick', () => {
         pagination
             .find('[id="NextButton"]')
             .simulate('click');
-        expect(mockChangePage).toHaveBeenCalledWith(props.paginationV.totalPages + 1, props.paginationV.totalElements);
+        expect(mockChangePage).toHaveBeenCalledWith(props.paginationV.actualPage + 1, 6);
     });
 
 });

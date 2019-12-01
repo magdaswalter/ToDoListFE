@@ -1,14 +1,17 @@
-# Stage 1
-FROM node:8.7.0-alpine
+# # Stage 1
+# FROM node:12 as react-build
+# WORKDIR /app
+# COPY . ./
+# RUN npm i \
+#     && npm run-script build
 
-RUN mkdir -p /srv/app/to-do-list-fe
-WORKDIR /srv/app/to-do-list-fe
+# # Stage 2 - the production environment
+# FROM nginx:alpine
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# COPY --from=react-build /app/build /usr/share/nginx/html
+# CMD ["nginx", "-g", "daemon off;"]
 
-COPY package.json /srv/app/to-do-list-fe
-COPY package-lock.json /srv/app/to-do-list-fe
-
-RUN npm install
-
-COPY . /srv/app/to-do-list-fe
-
-CMD ["npm", "start"]
+FROM nginx:alpine
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./build /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]

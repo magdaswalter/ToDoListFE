@@ -1,11 +1,11 @@
 import axios from 'axios';
 import * as types from './types';
 import * as interfaces from '../../interfaces/task.type';
-import {Dispatch} from "redux";
+import { Dispatch } from "redux";
 
 
 export const httpToDo = axios.create({
-    baseURL: 'http://localhost:9090/tasks',
+    baseURL: 'http://localhost:8080/tasks',
     headers: {
         'content-type': 'application/json;charset=UTF-8',
         common: {
@@ -15,7 +15,7 @@ export const httpToDo = axios.create({
 });
 
 export function requestDispatch(type: string) {
-    return {type};
+    return { type };
 }
 
 export function getTasks(page: number): any {
@@ -42,17 +42,16 @@ export function getTasks(page: number): any {
     }
 }
 
-export function createTask(createBody: interfaces.PostBody, isStateEditable: boolean): any {
+export function createTask(createBody: interfaces.PostBody): any {
 
     return function (dispatch: Dispatch) {
         dispatch(requestDispatch(types.CREATE_TASKS_REQUEST));
         return httpToDo.post('', createBody)
-            .then((response: {data: {content: interfaces.Task}}) => {
+            .then((response: { data: { content: interfaces.Task } }) => {
                 const data = response.data;
                 dispatch({
                     type: types.CREATE_TASKS_SUCCESS,
-                    task: data,
-                    isStateEditable
+                    task: data
                 })
             }).catch(error => {
                 dispatch(requestDispatch(types.CREATE_TASKS_ERROR));
@@ -66,7 +65,7 @@ export function updateTask(updateBody: interfaces.PostBody, index: number): any 
     return function (dispatch: Dispatch) {
         dispatch(requestDispatch(types.UPDATE_TASKS_REQUEST));
         return httpToDo.post('', updateBody)
-            .then((response: {data: {content: interfaces.Task}}) => {
+            .then((response: { data: { content: interfaces.Task } }) => {
                 const data = response.data;
                 dispatch({
                     type: types.UPDATE_TASKS_SUCCESS,
@@ -87,7 +86,7 @@ export function deleteTask(taskId: number, stateId: number): any {
     return function (dispatch: Dispatch) {
         dispatch(requestDispatch(types.DELETE_TASKS_REQUEST));
         return httpToDo.delete(getTasksUrl)
-            .then((response: {data: {content: interfaces.Task}}) => {
+            .then((response: { data: { content: interfaces.Task } }) => {
                 const data = response.data;
                 dispatch({
                     type: types.DELETE_TASKS_SUCCESS,
