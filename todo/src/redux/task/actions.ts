@@ -87,7 +87,6 @@ export function deleteTask(taskId: number, stateId: number): any {
         dispatch(requestDispatch(types.DELETE_TASKS_REQUEST));
         return httpToDo.delete(getTasksUrl)
             .then((response: { data: { content: interfaces.Task } }) => {
-                const data = response.data;
                 dispatch({
                     type: types.DELETE_TASKS_SUCCESS,
                     stateId: stateId,

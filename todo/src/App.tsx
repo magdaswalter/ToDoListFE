@@ -9,9 +9,6 @@ const store = configureStore();
 
 
 class App extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-    }
 
     componentDidMount() {
         store.dispatch(getTasks(0));

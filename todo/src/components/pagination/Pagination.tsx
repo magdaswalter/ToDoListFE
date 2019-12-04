@@ -1,7 +1,5 @@
 import {IconButton} from '@material-ui/core';
 import {KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import React from 'react';
 
 import './pagination.scss';
@@ -23,11 +21,11 @@ function Pagination(props: IPagination ) {
     const total = totalPages || 1;
     const pageNav = current + ' / ' + total;
 
-    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleBackButtonClick = () => {
         changePage(actualPage - 1, 6);
     };
 
-    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleNextButtonClick = () => {
         changePage(actualPage + 1, 6);
     };
 

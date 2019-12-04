@@ -1,17 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import './task-card.scss';
 import {Task} from "../../interfaces/task.type";
 import {Button} from "@material-ui/core";
 import TaskDialog from "../dialog/TaskDialog";
-
-interface ITaskCardState {
-    open: boolean;
-    id: number;
-    taskName: string;
-    description: string;
-    status: string;
-}
 
 interface ITaskCardProps {
     deleteTask: any,
@@ -32,7 +24,7 @@ function TaskCard(props: ITaskCardProps) {
     const [taskState, setTaskState] = React.useState(initialState);
 
     function deleteTask (id: number){
-        props.state.map((value: any, index: number) => {
+        props.state.forEach((value: any, index: number) => {
             if (value.id === id) {
                 props.deleteTask(id, index);
             }
@@ -50,7 +42,7 @@ function TaskCard(props: ITaskCardProps) {
     }
 
     function updateTask(body: Task) {
-        props.state.map((value:any, index: number) => {
+        props.state.forEach((value:any, index: number) => {
             if (value.id === taskState.id){
                 props.updateTask(body, index);
             }

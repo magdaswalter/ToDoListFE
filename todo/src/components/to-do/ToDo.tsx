@@ -67,7 +67,7 @@ class ToDo extends React.Component<IToDoProps, IToDoState> {
     };
 
     render() {
-        let card = this.setupCards(this.props.tasks.tasks);
+        let card = this.props.tasks ? this.setupCards(this.props.tasks.tasks) : <TaskCard deleteTask={this.deleteTask} updateTask={this.updateTask} state={{}} tasks={{id: 0, taskName: '', description: '', status: ''}}/>
         return (
             <div>
                 <div className={'header'}>
